@@ -1,0 +1,30 @@
+gcc -Wall -pedantic -g   -c -o pgrep.o pgrep.c
+gcc -Wall -pedantic -g   -c -o dir.o dir.c
+dir.c:4:1: error: unknown type name ‘t_files’
+ t_files createFiles(int n) {
+ ^~~~~~~
+dir.c: In function ‘createFiles’:
+dir.c:5:2: error: unknown type name ‘t_files’
+  t_files files = malloc(sizeof*files);
+  ^~~~~~~
+dir.c:5:31: error: invalid type argument of unary ‘*’ (have ‘int’)
+  t_files files = malloc(sizeof*files);
+                               ^~~~~~
+dir.c:6:7: error: invalid type argument of ‘->’ (have ‘int’)
+  files->quantidadeMaxima = n;
+       ^~
+dir.c:7:7: error: invalid type argument of ‘->’ (have ‘int’)
+  files->quantidade = 0;
+       ^~
+dir.c:8:7: error: invalid type argument of ‘->’ (have ‘int’)
+  files->arquivos = malloc( n * (sizeof(char**)));
+       ^~
+dir.c: At top level:
+dir.c:12:22: error: unknown type name ‘t_files’
+ void adicionaArquivo(t_files files, char *arquivo) {
+                      ^~~~~~~
+dir.c:23:19: error: unknown type name ‘t_files’
+ void free_t_files(t_files files) {
+                   ^~~~~~~
+<builtin>: recipe for target 'dir.o' failed
+make: *** [dir.o] Error 1

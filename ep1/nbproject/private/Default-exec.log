@@ -1,0 +1,22 @@
+called: gcc
+	/home/willian/paralela/ime-paralela/ep1
+	gcc
+	-Wall
+	-pedantic
+	-g
+	-c
+	-o
+	pgrep.o
+	pgrep.c
+
+called: gcc
+	/home/willian/paralela/ime-paralela/ep1
+	gcc
+	-Wall
+	-pedantic
+	-g
+	-c
+	-o
+	dir.o
+	dir.c
+

@@ -4,8 +4,8 @@ LIBS=-lm
 
 all: pgrep
 
-pgrep: pgrep.o 
-	${CC} ${CFLAGS} -o pgrep pgrep.o ${LIBS}
+pgrep: dir.o pgrep.o
+	${CC} ${CFLAGS} -o pgrep *.o ${LIBS}
 clean:
 	rm pgrep *.o
 
