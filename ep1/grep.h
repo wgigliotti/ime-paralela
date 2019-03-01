@@ -21,7 +21,7 @@ struct P_GREP {
 
 void grep_read_dir(char *path, a_list list);
 
-void grep_file(char *filePath, regex_t regex, int **results, int *maxResults);
+void grep_file(char *file_path, regex_t regex, int **results, int *max_results);
 
 p_grep grep_create(a_list files, regex_t regex);
 

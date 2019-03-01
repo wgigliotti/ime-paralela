@@ -9,7 +9,7 @@
 #include <pthread.h>
 #include <sys/types.h>
 
-a_list initFiles(char *path, a_list files) {
+a_list init_files(char *path, a_list files) {
     grep_read_dir(path, files);
     return files;
 }
@@ -74,7 +74,7 @@ void run_grep(int size, char *reg, char *path) {
         }
     }
 
-    initFiles(path, files);
+    init_files(path, files);
     grep->active = 0;
     /* wait for the second thread to finish */
     for (i = 0; i < size; i++) {

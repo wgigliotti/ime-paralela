@@ -7,7 +7,7 @@
 
 a_list a_list_create(int n) {
     a_list list = malloc(sizeof*list);
-    list->maxSize = n;
+    list->max_size = n;
     list->size = 0;
     list->array = calloc(n , (sizeof (void*)));
     pthread_mutex_init(&(list->mutex), NULL);
@@ -21,9 +21,9 @@ void a_list_add(a_list list, void *item) {
     pthread_mutex_lock(&(list->mutex));
     
     int pos = list->size;
-    if (pos == list->maxSize) {
-        list->maxSize = pos * 2;
-        copy = calloc(list->maxSize , (sizeof (void*)));
+    if (pos == list->max_size) {
+        list->max_size = pos * 2;
+        copy = calloc(list->max_size , (sizeof (void*)));
         for(i=0;i<list->size;i++) {
             copy[i] = list->array[i];
         }

@@ -12,7 +12,7 @@ typedef struct ARRAY_LIST *a_list;
 struct ARRAY_LIST {
    int size; /* Quantidade de arquivos marcados */
    void **array; /* Lista dos Paths dos arquivos */
-   int maxSize; /* Quantidade Máxima de arquivos */
+   int max_size; /* Quantidade Máxima de arquivos */
    pthread_mutex_t mutex;
 };
 
