@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <regex.h>
 #include "list.h"
-#include "dir.h"
+#include "grep.h"
 #include <dirent.h>
 
 
@@ -44,8 +44,8 @@ void grep_file(char *filePath, regex_t regex, int **results, int *maxResults) {
 
     fp = fopen(filePath, "r");
     if (fp == NULL) {
-        printf("Deu ruim ao tentar abrir o arquivo %s - Codigo: %d\n", filePath, errno);
-        exit(1);
+        (*results)[countMatch] = -1;
+        return;
     }
 
     while (fgets(fline, GREP_STR_BUFFER, fp) != NULL) {

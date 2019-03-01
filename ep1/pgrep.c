@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <regex.h>
 #include "list.h"
-#include "dir.h"
+#include "grep.h"
 #include <pthread.h>
 #include <sys/types.h>
 
@@ -20,7 +21,7 @@ void *grep_full(void *pointer) {
     int size = 1000;
     int *resultados = calloc(size, sizeof (int));
     int files = 0;
-    pthread_t threadB = pthread_self();
+//    pthread_t threadB = pthread_self();
     
     if (regcomp(&regex, grep->pattern, 0)) {
         fprintf(stderr, "Could not compile regex\n");
@@ -32,6 +33,7 @@ void *grep_full(void *pointer) {
         file = a_list_pop(grep->files);
         if(file == NULL) {
             if(grep->active) {
+                usleep(10);
                 continue;
             } 
             break;
@@ -66,9 +68,8 @@ void runGrep(char *reg, char *path, int size) {
     grep = grep_create(files, regex);
     grep->pattern = reg;
     
-    initFiles(path, files);
     
-    printf("%d files to read\n", files->size);
+    
     for (i = 0; i < size; i++) {
         if (pthread_create(&(inc_x_thread[i]), NULL, grep_full, &grep)) {
             fprintf(stderr, "Error creating thread\n");
@@ -76,8 +77,7 @@ void runGrep(char *reg, char *path, int size) {
         }
     }
 
-    
-
+    initFiles(path, files);
     grep->active = 0;
     /* wait for the second thread to finish */
     for (i = 0; i < size; i++) {
@@ -86,16 +86,17 @@ void runGrep(char *reg, char *path, int size) {
             return;
         }
     }
-    printf("%d files to read\n", files->size);
 }
 
 int main(int argc, char** argv) {
-    if (argc < 3) {
+    int max_threads = atoi(argv[1]);
+    if (argc < 4) {
         printf("Falta parâmetros!\n");
         return 3;
     }
+    
 
-    runGrep(argv[2], argv[1], 1);
+    runGrep(argv[3], argv[2], max_threads);
 
     return 1;
 }
