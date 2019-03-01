@@ -1,0 +1,4 @@
+*.o
+*.swp
+ep1/pgrep
+*~
