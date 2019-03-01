@@ -3,46 +3,44 @@
 #include <string.h>
 #include <errno.h>
 #include <regex.h>
+#include <dirent.h>
 #include "list.h"
 #include "grep.h"
-#include <dirent.h>
 
-
-int acceptDir(char *dir) {
+int accept_dir(char *dir) {
    int restricao = strcmp(dir, "..") == 0;
    restricao = (strcmp(dir, ".") == 0) || restricao;
    return restricao != 1 ;
 }
 
 void grep_read_dir(char *path, a_list list) {
-    struct dirent *pDirent;
-    DIR *pDir;
+    struct dirent *dir_entry;
+    DIR *dir;
     char buffer[1200];
 
-    pDir = opendir(path);
-    if (pDir == NULL) {
+    dir = opendir(path);
+    if (dir == NULL) {
         printf("Deu ruim ao abrir a pasta %s\n", path);
         return;
     }
-    while ((pDirent = readdir(pDir)) != NULL) {
-        sprintf(buffer, "%s/%s", path, pDirent->d_name);
-        if (pDirent->d_type == 8) {
+    while ((dir_entry = readdir(dir)) != NULL) {
+        sprintf(buffer, "%s/%s", path, dir_entry->d_name);
+        if (dir_entry->d_type == 8) {
             a_list_stradd(list, buffer);
-        } else if (pDirent->d_type == 4 && acceptDir(pDirent->d_name)) {
+        } else if (dir_entry->d_type == 4 && accept_dir(dir_entry->d_name)) {
             grep_read_dir(buffer, list);
         }
     }
-    closedir(pDir);
+    closedir(dir);
 }
 
-
-void grep_file(char *filePath, regex_t regex, int **results, int *maxResults) {
+void grep_file(char *file_path, regex_t regex, int **results, int *max_results) {
     char fline[GREP_STR_BUFFER];
     char *line;
     int count = 0, lastLine = -1, hasNewLine = 0, countMatch = 0;
     FILE *fp;
 
-    fp = fopen(filePath, "r");
+    fp = fopen(file_path, "r");
     if (fp == NULL) {
         (*results)[countMatch] = -1;
         return;
@@ -67,9 +65,9 @@ void grep_file(char *filePath, regex_t regex, int **results, int *maxResults) {
         if (!regexec(&regex, fline, 0, NULL, 0)) {
             //printf("%d\n", count);
             lastLine = count;
-            if(countMatch == (*maxResults)) {
-                *maxResults = 2 * countMatch;
-                *results = realloc(*results, (*maxResults) * sizeof(int));
+            if(countMatch == (*max_results)) {
+                *max_results = 2 * countMatch;
+                *results = realloc(*results, (*max_results) * sizeof(int));
             }
             (*results)[countMatch] = lastLine;
             countMatch++;

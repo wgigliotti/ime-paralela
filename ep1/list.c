@@ -50,8 +50,6 @@ void* a_list_pop(a_list list) {
         return NULL;
     }
     
-    
-    
     list->size = list->size - 1;
     element = list->array[list->size];
     //printf("getting: %s\n", (char*) element);

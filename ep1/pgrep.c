@@ -28,7 +28,6 @@ void *grep_full(void *pointer) {
         exit(1);
     }
 
-    
     while (1) {
         file = a_list_pop(grep->files);
         if(file == NULL) {
@@ -52,7 +51,7 @@ void *grep_full(void *pointer) {
     return NULL;
 }
 
-void runGrep(char *reg, char *path, int size) {
+void run_grep(int size, char *reg, char *path) {
     regex_t regex;
     p_grep grep;
     int i;
@@ -67,8 +66,6 @@ void runGrep(char *reg, char *path, int size) {
     a_list files = a_list_create(1000);
     grep = grep_create(files, regex);
     grep->pattern = reg;
-    
-    
     
     for (i = 0; i < size; i++) {
         if (pthread_create(&(inc_x_thread[i]), NULL, grep_full, &grep)) {
@@ -88,15 +85,15 @@ void runGrep(char *reg, char *path, int size) {
     }
 }
 
-int main(int argc, char** argv) {
-    int max_threads = atoi(argv[1]);
+int main(int argc, char** argv) {    
     if (argc < 4) {
-        printf("Falta parâmetros!\n");
+        printf("Running pgrep:\n");
+        printf("$ pgrep <number of threads> <regular expression> <path>:\n");
         return 3;
     }
-    
 
-    runGrep(argv[3], argv[2], max_threads);
+    int max_threads = atoi(argv[1]);
+    run_grep(max_threads, argv[2], argv[3]);
 
     return 1;
 }
