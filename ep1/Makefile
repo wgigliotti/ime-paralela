@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-Wall -pedantic -g
-LIBS=-lm
+LIBS=-lm -pthread
 
 all: pgrep
 
-pgrep: dir.o pgrep.o
+pgrep: list.o pgrep.o dir.o
 	${CC} ${CFLAGS} -o pgrep *.o ${LIBS}
 clean:
 	rm pgrep *.o

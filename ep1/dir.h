@@ -1,18 +1,33 @@
-#ifndef __dir__
-#define __dir__ 1
+/* 
+ * File:   dir.h
+ * Author: willian
+ *
+ * Created on February 27, 2019, 11:09 PM
+ */
 
+#ifndef GREP_H
+#define	GREP_H
 
-typedef struct T_FILES *t_files;
-struct T_FILES {
-   int quantidade; /* Quantidade de arquivos marcados */
-   char **arquivos; /* Lista dos Paths dos arquivos */
-   int quantidadeMaxima; /* Quantidade Máxima de arquivos */
+typedef struct P_GREP *p_grep;
+struct P_GREP {
+    a_list files;    
+    pthread_mutex_t mutex;
+    regex_t regex;
+    char *pattern;
+    int active;
 };
 
-t_files createFiles(int n);
-void adicionaArquivo(t_files files, char *arquivo);
-void free_t_files(t_files files);
-void print_t_files(t_files files);
+#define GREP_STR_BUFFER 10000
 
-#endif
+void grep_read_dir(char *path, a_list list);
+
+void grep_file(char *filePath, regex_t regex, int **results, int *maxResults);
+
+p_grep grep_create(a_list files, regex_t regex);
+
+void grep_free(p_grep grep);
+
+void grep_print_result(p_grep grep, char *filename, int *result);
+
+#endif	/* DIR_H */
 
