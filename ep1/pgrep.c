@@ -29,7 +29,7 @@ void *grep_full(void *pointer) {
     }
 
     while (1) {
-        file = a_list_pop(grep->files);
+        file = a_list_remove(grep->files);
         if(file == NULL) {
             if(grep->active) {
                 usleep(10);
@@ -97,6 +97,3 @@ int main(int argc, char** argv) {
 
     return 1;
 }
-
-
-

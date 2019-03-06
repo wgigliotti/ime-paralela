@@ -10,7 +10,10 @@
 
 typedef struct ARRAY_LIST *a_list;
 struct ARRAY_LIST {
-   int size; /* Quantidade de arquivos marcados */
+   int head; /* Quantidade de arquivos marcados */
+   int tail;
+   int is_full;
+   int current_size;
    void **array; /* Lista dos Paths dos arquivos */
    int max_size; /* Quantidade Máxima de arquivos */
    pthread_mutex_t mutex;
@@ -34,11 +37,22 @@ void a_list_free(a_list list);
 /*
  * Remove o ultimo elemento da lista e retorna ele
  */
-void* a_list_pop(a_list list);
+void* a_list_remove(a_list list);
 
 /*
  * Adiciona a cópia de uma string na lista
  */
 void a_list_stradd(a_list list, char *str);
+
+/*
+ * Devolve 1 se a lista está cheia, 0 caso contrário
+ */
+int a_list_is_full(a_list list);
+
+/*
+ * Devolve 1 se a lista está vazia, 0 caso contrário
+ */
+int a_list_is_empty(a_list list);
+
 #endif
 

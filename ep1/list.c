@@ -3,55 +3,87 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "list.h"
 
 a_list a_list_create(int n) {
+    if (n < 1) {
+        printf("List size should be greater than 0.\n");
+        exit(-1);
+    }
     a_list list = malloc(sizeof*list);
+    list->head = 0;
+    list->tail = 0;
     list->max_size = n;
-    list->size = 0;
+    list->is_full = 0;
+    list->current_size = 0;
     list->array = calloc(n , (sizeof (void*)));
     pthread_mutex_init(&(list->mutex), NULL);
     return list;
 }
 
+/**
+ * Add a new element to the list. If the list is full, it is copied to a new
+ * one that will have the double of capacity.
+ * @param list
+ * @param item
+ */
 void a_list_add(a_list list, void *item) {
     void **copy;
     int i;
-    
+   
     pthread_mutex_lock(&(list->mutex));
     
-    int pos = list->size;
-    if (pos == list->max_size) {
-        list->max_size = pos * 2;
-        copy = calloc(list->max_size , (sizeof (void*)));
-        for(i=0;i<list->size;i++) {
-            copy[i] = list->array[i];
+    if (list->is_full) {
+//        printf("Dobrando o tamanho %d\n", list->max_size*2);
+        copy = calloc(list->max_size * 2, (sizeof (void*)));
+        for(i = 0; i < list->max_size; i++) {
+            copy[i] = list->array[(list->head+i) % list->max_size];
         }
         free(list->array);
-        list->array = copy;
+        list->array = copy;        
+        list->head = 0;
+        list->tail = list->max_size;
+        list->max_size = list->max_size * 2;
+        list->is_full = 0;
     }
 
-    list->array[pos] = item;
-    list->size = list->size + 1;
-        
+    list->array[list->tail] = item;
+    list->tail++;
+
+    if (list->tail == list->max_size) {
+        list->tail = 0;
+    }
+    if (list->tail == list->head) {
+        list->is_full = 1;
+    }
+    
+    list->current_size++;
+    
     pthread_mutex_unlock(&(list->mutex));
 }
 
 /*
  * Remove o ultimo elemento da lista e retorna ele
  */
-void* a_list_pop(a_list list) {
-    void *element;
+void* a_list_remove(a_list list) {
+    void *element = NULL;
     
     pthread_mutex_lock(&(list->mutex));
     
-    if(list->size == 0) {
+    if (list->current_size <= 0) {
         pthread_mutex_unlock(&(list->mutex));
-        return NULL;
-    }
+        return element;
+    }        
     
-    list->size = list->size - 1;
-    element = list->array[list->size];
+    list->current_size--;
+    element = list->array[list->head];
+    
+    list->head++;
+    if (list->head == list->max_size) {
+        list->head = 0;
+    }
+    list->is_full = 0;
     //printf("getting: %s\n", (char*) element);
     pthread_mutex_unlock(&(list->mutex));
     return element;
@@ -72,7 +104,19 @@ void a_list_stradd(a_list list, char *str) {
 
 void a_list_free(a_list files) {
     free(files->array);
+    //TODO: estudar melhor como funciona esse mutex_destroy
     pthread_mutex_destroy(&(files->mutex));
     free(files);
 }
 
+int a_list_is_full(a_list list) {
+    return list->is_full;    
+}
+
+int a_list_is_empty(a_list list) {
+    if (list->current_size > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}

@@ -60,7 +60,6 @@ void grep_file(char *file_path, regex_t regex, int **results, int *max_results) 
         } else {
             hasNewLine = 0;
         }
-        
 
         if (!regexec(&regex, fline, 0, NULL, 0)) {
             //printf("%d\n", count);
@@ -100,7 +99,7 @@ void grep_print_result(p_grep grep, char *filename, int *result) {
     pthread_mutex_lock(&(grep->mutex));
     
     for(i=0;result[i] != -1;i++) {
-        printf("%s %d\n", filename, result[i]);
+        printf("%s: %d\n", filename, result[i]);
     }
     
     pthread_mutex_unlock(&(grep->mutex));
