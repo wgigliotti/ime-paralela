@@ -8,7 +8,7 @@
 
 a_list a_list_create(int n) {
     if (n < 1) {
-        printf("List size should be greater than 0.\n");
+        fprintf(stderr, "List size should be greater than 0.\n");
         exit(-1);
     }
     a_list list = malloc(sizeof*list);

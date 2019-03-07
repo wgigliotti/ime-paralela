@@ -21,7 +21,7 @@ void grep_read_dir(char *path, a_list list) {
 
     dir = opendir(path);
     if (dir == NULL) {
-        printf("Deu ruim ao abrir a pasta %s\n", path);
+        fprintf(stderr, "Deu ruim ao abrir a pasta %s\n", path);
         return;
     }
     while ((dir_entry = readdir(dir)) != NULL) {
