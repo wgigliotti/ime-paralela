@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 #include <regex.h>
 #include <dirent.h>
@@ -26,6 +27,9 @@ void grep_read_dir(char *path, a_list list) {
     while ((dir_entry = readdir(dir)) != NULL) {
         sprintf(buffer, "%s/%s", path, dir_entry->d_name);
         if (dir_entry->d_type == 8) {
+            while(a_list_is_full(list)) {
+                usleep(1);
+            }
             a_list_stradd(list, buffer);
         } else if (dir_entry->d_type == 4 && accept_dir(dir_entry->d_name)) {
             grep_read_dir(buffer, list);
