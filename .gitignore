@@ -2,3 +2,5 @@
 *.swp
 ep1/pgrep
 *~
+/ep1/
+nbproject/*
