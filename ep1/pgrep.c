@@ -6,7 +6,7 @@
 #include <regex.h>
 #include "list.h"
 #include "grep.h"
-#include "time.h"
+#include "sleep.h"
 #include <pthread.h>
 #include <sys/types.h>
 
@@ -39,7 +39,7 @@ void *grep_process_only(void *pointer) {
             if(grep->total_files == grep->processed_files) {
                 break;
             }
-            nanosleep(1);
+            nsleep(1);
             continue;
         }
         if (!regexec(&regex, job->content, 0, NULL, 0)) {
@@ -47,6 +47,7 @@ void *grep_process_only(void *pointer) {
         }
         int finish = finish_job(grep, job);
         if(finish) {
+
             break;
         }
     }

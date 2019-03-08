@@ -17,7 +17,7 @@
 /*
  * Sleep for t nanoseconds
  */
-void nanosleep(long t);   
+void nsleep(long t);   
    
 #endif /* TIME_H */
 

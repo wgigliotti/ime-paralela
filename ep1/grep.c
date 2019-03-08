@@ -7,7 +7,7 @@
 #include <regex.h>
 #include "list.h"
 #include "grep.h"
-#include "time.h"
+#include "sleep.h"
 #include <pthread.h>
 #include <sys/types.h>
 
@@ -31,7 +31,7 @@ void grep_read_dir(char *path, a_list list) {
         sprintf(buffer, "%s/%s", path, dir_entry->d_name);
         if (dir_entry->d_type == 8) {
             while(a_list_is_full(list)) {
-                nanosleep(1);
+                nsleep(1);
             }
             a_list_stradd(list, buffer);
         } else if (dir_entry->d_type == 4 && accept_dir(dir_entry->d_name)) {
@@ -130,7 +130,7 @@ void grep_print_result(p_grep grep, char *filename, int *result) {
 grep_job job_get_from_pool(p_grep grep) {
     grep_job job = NULL;
     while ((job = a_list_remove(grep->jobs_pool)) == NULL) {
-        nanosleep(1);
+        nsleep(1);
     }
     return job;
 }
