@@ -1,10 +1,10 @@
 CC=gcc
-CFLAGS=-std=c99 -Wall -Wmisleading-indentation -pedantic -g
+CFLAGS=-Wall -Wmisleading-indentation -pedantic -g
 LIBS=-lm -pthread
 
 all: pgrep
 
-pgrep: list.o pgrep.o grep.o
+pgrep: list.o pgrep.o grep.o sleep.o
 	${CC} ${CFLAGS} -o pgrep *.o ${LIBS}
 
 clean:
