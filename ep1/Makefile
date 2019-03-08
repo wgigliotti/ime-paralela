@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -pedantic -g
+CFLAGS=-std=c99 -Wall -Wmisleading-indentation -pedantic -g
 LIBS=-lm -pthread
 
 all: pgrep

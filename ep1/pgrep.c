@@ -6,6 +6,7 @@
 #include <regex.h>
 #include "list.h"
 #include "grep.h"
+#include "time.h"
 #include <pthread.h>
 #include <sys/types.h>
 
@@ -32,7 +33,7 @@ void *grep_full(void *pointer) {
         file = a_list_remove(grep->files);
         if(file == NULL) {
             if(grep->active) {
-                usleep(10);
+                nanosleep(1);
                 continue;
             } 
             break;
