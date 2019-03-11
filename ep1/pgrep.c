@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include <regex.h>
 #include "list.h"
 #include "grep.h"
 #include "time.h"
@@ -40,7 +39,7 @@ void *grep_full(void *pointer) {
         }
         files++;
         grep_file(file, regex, &resultados, &size);
-        grep_print_result(grep, file, resultados);
+        grep_print_result(grep->mutex, file, resultados);
         free(file);
     }
     

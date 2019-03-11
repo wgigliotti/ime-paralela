@@ -2,9 +2,10 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <in>alt_pgrep.c</in>
       <in>grep.c</in>
-      <in>grep.h</in>
       <in>list.c</in>
+      <in>parallel_file.c</in>
       <in>pgrep.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -27,7 +28,9 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <flagsDictionary>
-        <element flagsID="0" commonFlags="-g"/>
+        <element flagsID="0"
+                 commonFlags="-mtune=generic -march=x86-64 -g -std=c99 -fstack-protector-strong"/>
+        <element flagsID="1" commonFlags="-std=c99 -g"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -43,18 +46,27 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
-      <item path="grep.c" ex="false" tool="0" flavor2="0">
-        <cTool flags="0">
+      <item path="alt_pgrep.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="1">
         </cTool>
       </item>
-      <item path="grep.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="list.c" ex="false" tool="0" flavor2="0">
-        <cTool flags="0">
+      <item path="grep.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="1">
         </cTool>
       </item>
-      <item path="pgrep.c" ex="false" tool="0" flavor2="0">
+      <item path="list.c" ex="false" tool="0" flavor2="3">
         <cTool flags="0">
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="parallel_file.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="1">
+        </cTool>
+      </item>
+      <item path="pgrep.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="1">
         </cTool>
       </item>
     </conf>

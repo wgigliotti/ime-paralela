@@ -98,13 +98,13 @@ void grep_free(p_grep grep) {
     free(grep);
 }
 
-void grep_print_result(p_grep grep, char *filename, int *result) {
+void grep_print_result(pthread_mutex_t mutex, char *filename, int *result) {
     int i;
-    pthread_mutex_lock(&(grep->mutex));
+    pthread_mutex_lock(&(mutex));
     
     for(i=0;result[i] != -1;i++) {
         printf("%s: %d\n", filename, result[i]);
     }
     
-    pthread_mutex_unlock(&(grep->mutex));
+    pthread_mutex_unlock(&(mutex));
 }

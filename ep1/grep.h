@@ -8,6 +8,8 @@
 #ifndef GREP_H
 #define	GREP_H
 
+#include <regex.h>
+
 typedef struct P_GREP *p_grep;
 struct P_GREP {
     a_list files;    
@@ -27,7 +29,7 @@ p_grep grep_create(a_list files, regex_t regex);
 
 void grep_free(p_grep grep);
 
-void grep_print_result(p_grep grep, char *filename, int *result);
+void grep_print_result(pthread_mutex_t mutex, char *filename, int *result);
 
 #endif	/* DIR_H */
 
